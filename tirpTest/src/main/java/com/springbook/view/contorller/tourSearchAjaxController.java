@@ -25,9 +25,23 @@ import com.springbook.biz.planner.tourSearchVO;
 public class tourSearchAjaxController{
 
 		@RequestMapping("/test.do")
-		public Object getTourHouseList(HttpServletRequest request , String page, int pageNum , String keyword) throws Exception{
-		    int pageNO = 1;	
+		public Object getTourHouseList(HttpServletRequest request , String page, int pageNum , String keyword , int kate) throws Exception{
+		    int pageNO = 1;	// 페이지
+		    int areaCode = 0; // 지역코드 
+		    int[] content = {12, 14, 15, 38, 39}; // 관광 종류
+		    int contentTypeId = 12;
+
+		    if(kate > 0) { // 카테고리 여부 확인
+		    	for(int num : content) {
+		    		if(num == kate) {
+		    			contentTypeId = num;
+		    		}
+		    	}
+		    	
+		    }
+		    System.out.println(contentTypeId);
 			String apiToururl= "";
+			
 			if(!(page.isEmpty())){
 				pageNO = page(pageNum , page);
 			}
@@ -40,12 +54,8 @@ public class tourSearchAjaxController{
 							+ "&ServiceKey=CYndID2JHrOzK1Pr%2FAgioaNHSEKM3ql%2FiYRsxfTe9iJ6XXTbTF1H0oo%2FMYBEdb8iViimIILo%2FbsY63MXYjTZ6g%3D%3D"
 							+ "&listYN=Y"
 							+ "&arrange=A&"
-							+ "&contentTypeId=39"
-							+ "&areaCode=1"
-							+ "&sigunguCode="
-							+ "&cat1=A05"
-							+ "&cat2=A0502"
-							+ "&cat3="
+							+ "&ContentTypeId=" + contentTypeId
+							+ "&areaCode=31"
 							+ "&_type=json";	
 				}else {
 					apiToururl = "http://apis.data.go.kr/B551011/KorService/searchKeyword?"
@@ -53,12 +63,9 @@ public class tourSearchAjaxController{
 							+ "&pageNo="+pageNO
 							+ "&MobileOS=ETC"
 							+ "&MobileApp=AppTest"
+							+ "&contentTypeId=" + contentTypeId
 							+ "&_type=json"
 							+ "&areaCode="
-							+ "&sigunguCode="
-							+ "&cat1="
-							+ "&cat2="
-							+ "&cat3="
 							+ "&ServiceKey=CYndID2JHrOzK1Pr%2FAgioaNHSEKM3ql%2FiYRsxfTe9iJ6XXTbTF1H0oo%2FMYBEdb8iViimIILo%2FbsY63MXYjTZ6g%3D%3D"
 							+"&keyword=";
 					keyword = URLEncoder.encode(keyword, "UTF-8");
@@ -95,6 +102,7 @@ public class tourSearchAjaxController{
 		            vo.setFirstimage((String)jsonObj.get("firstimage"));
 		            vo.setPageNum(pageNO);
 		            vo.setKeyword(keyword);
+		            vo.setKate(kate);
 		            tourList.add(vo);
 		        }
 		       

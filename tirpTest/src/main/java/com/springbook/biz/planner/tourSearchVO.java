@@ -9,8 +9,15 @@ public class tourSearchVO {
 	private String firstimage;
 	private int pageNum = 1;
 	private String keyword = "";
+	private int kate = 12;
 	
 	
+	public int getKate() {
+		return kate;
+	}
+	public void setKate(int kate) {
+		this.kate = kate;
+	}
 	public String getKeyword() {
 		return keyword;
 	}
